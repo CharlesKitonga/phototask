@@ -1,23 +1,23 @@
-import logo from './logo.svg';
 import './App.css';
+import Loading from './components/loading';
+import {useState, useEffect } from "react"
+import axios from 'axios';
+import PhotoList from './components/photos';
 
 function App() {
+
+  const [photos, setPhotos] = useState(null);
+  // use the useEffect Hook to listen to side changes
+  useEffect(() => {
+    axios.get("https://jsonplaceholder.typicode.com/photos").then((result) => {
+      // console.table(result.data);
+      setPhotos(result.data);
+    });
+  }, []); // only fires one time when the component loads
+ 
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div >
+      {photos ?  <PhotoList photos={photos} />: <Loading />}
     </div>
   );
 }
